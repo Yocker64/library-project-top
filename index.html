@@ -13,14 +13,14 @@
      <!-- For the name and email -->
     <div id="popupForm-1" class="popup">
         <div class="popup-content">
-            <span class="close-btn">&times;</span>
+            <span class="close-btn" id="close-btn1">&times;</span>
             <h2>Sign Up</h2>
             <form method="post" action="index.html">
                 <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="nameUser" name="name" required>
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
-                <button type="submit">Submit</button>
+                <button type="submit" id="submitUser">Submit</button>
             </form>
         </div>
     </div>
@@ -28,18 +28,20 @@
     <!-- For the book name and author -->
     <div id="popupForm-2" class="popup">
         <div class="popup-content">
-            <span class="close-btn">&times;</span>
+            <span class="close-btn" id="close-btn2">&times;</span>
             <h2>Add new book</h2>
-            <form method="post" action="index.html">
+            <form method="post" action="index.html" target="_blank">
                 <label for="name">Book:</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="nameBook" name="name" required>
                 <label for="author">Author:</label>
                 <input type="text" id="author" name="author" required>
                 <label for="pages">Pages</label>
                 <input type="number" name="pages" id="pages">
-                <label for="read">Have you finish reading it?</label>
-                <input type="checkbox" name="read" id="read">
-                <button type="submit">Submit</button>
+                <div class="form-row">
+                    <label for="read">Have you finish reading it?</label>
+                    <input type="checkbox" name="read" id="read">
+                </div>
+                <button type="submit" id="submitBook">Submit</button>
             </form>
         </div>
     </div>
@@ -49,12 +51,11 @@
         <h1>Library</h1>
         <div class="users-info">
             <button id="openFormBtn">Sign In</button>
-            <img src="" alt=""user-avatar id="user-avatar">
             <span id="user-name"></span>
         </div>
     </header>
     <main>
-        <h2 id="phrase">"I have always imagined that Paradise will be a kind of library." — Jorge Luis Borges</h2>
+        <h2 id="phrase">"I have always imagined that Paradise will be a kind of library." <br>— Jorge Luis Borges</h2>
         <div class="upper-interactions">
             <button id="add-book">Add</button>
             <select name="sorting" id="sort-method">
@@ -67,12 +68,6 @@
             </select>
         </div>
         <div class="book-table">
-            <p><b>Lorem ipsum dolor sit</b> <br> amet consectetur adipisicing elit. Nesciunt, suscipit veniam sequi </p>
-            <p>Lorem ipsum dolor sit</b> <br> consectetur adipisicing elit. Nesciunt, suscipit veniam sequi </p>
-            <p>Lorem ipsum dolor sit</b> <br> consectetur adipisicing elit. Nesciunt, suscipit veniam sequi </p>
-            <p>Lorem ipsum dolor sit</b> <br> consectetur adipisicing elit. Nesciunt, suscipit veniam sequi </p>
-            <p>Lorem ipsum dolor sit</b> <br> consectetur adipisicing elit. Nesciunt, suscipit veniam sequi </p>
-            <p>Lorem ipsum dolor sit</b> <br> consectetur adipisicing elit. Nesciunt, suscipit veniam sequi </p>
         </div>
     </main>
 
