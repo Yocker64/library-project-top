@@ -3,8 +3,8 @@ const myLibrary = [];
 // Constructors
 
 // Books
-function Book(bookName, author, pages, read) {
-  this.bookName = bookName;
+function Book(title, author, pages, read) {
+  this.title = title;
   this.author = author;
   this.pages = pages;
   this.read = read;
@@ -44,13 +44,15 @@ document.querySelector("#popupForm-2 form").addEventListener("submit", (event) =
 
 // Function to display books in the UI
 function addBookToTable(book) {
+  console.log(book);
+  
     const bookTable = document.querySelector(".book-table");
     const newBookEntry = document.createElement("p");
     newBookEntry.id = book.id;
 
-    // Title (bold)
-    const titleElement = document.createElement("b");
-    titleElement.textContent = book.title;
+    // Title 
+    const titleElement = document.createElement("span");
+    titleElement.textContent = `Title: ${book.title}`;
     newBookEntry.appendChild(titleElement);
     // Author
     const authorElement = document.createElement("span");
