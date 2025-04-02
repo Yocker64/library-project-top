@@ -1,86 +1,145 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // User name span
-    let fieldUserName = document.getElementById("user-name")
-    
-    // Open buttons
-    const signInBtn = document.getElementById("openFormBtn");
-    const addBookBtn = document.getElementById("add-book");
+const myLibrary = [];
 
-    // Popups
-    const popupSignIn = document.getElementById("popupForm-1");
-    const popupAddBook = document.getElementById("popupForm-2");
+// Constructors
 
-    // Close buttons
-    const closeBtns = document.querySelectorAll(".close-btn");
+// Books
+function Book(bookName, author, pages, read) {
+  this.bookName = bookName;
+  this.author = author;
+  this.pages = pages;
+  this.read = read;
+  this.id = crypto.randomUUID();
+  // Changes the state of the book from read, to not read and vice-versa
+}
 
-    // Submit buttons
-    const subUser = document.getElementById("submitUser");
-    const subBook = document.getElementById("submitBook");
+// Users
+function User(name, email){
+    this.name = name;
+    this.email = email;
+}
 
-    // User name field
-    let userName = document.getElementById('nameUser');
+// Handling form submission
+document.querySelector("#popupForm-2 form").addEventListener("submit", (event) => {
+    event.preventDefault(); // Prevent page reload
 
-    // Open respective popups
-    signInBtn.addEventListener("click", () => popupSignIn.style.display = "flex");
-    addBookBtn.addEventListener("click", () => popupAddBook.style.display = "flex");
+    // Get values from form
+    const title = document.getElementById("nameBook").value.trim();
+    const author = document.getElementById("author").value.trim();
+    const pages = document.getElementById("pages").value.trim();
+    const isRead = document.getElementById("read").checked;
 
-    // Close respective popups when clicking the close button
-    closeBtns.forEach(btn => {
-        btn.addEventListener("click", function () {
-            this.closest(".popup").style.display = "none";
-        });
-    });
+    // Create new book object
+    const newBook = new Book(title, author, pages || "Unknown", isRead);
 
-    // Close popups if clicking outside of content
-    window.addEventListener("click", function (event) {
-        if (event.target.classList.contains("popup")) {
-            event.target.style.display = "none";
-        }
-    });
+    // Store in array
+    myLibrary.push(newBook);
 
-    // Add the user and display it on the page
-    subUser.addEventListener("click", ()=>{
-        fieldUserName.textContent = userName.textContent;
-    } );
+    // Add to the UI
+    addBookToTable(newBook);
 
+    // Close form and reset
+    event.target.closest(".popup").style.display = "none";
+    event.target.reset();
+  });
 
-    // Obtener elementos del formulario de usuario
-    const userForm = document.querySelector("#popupForm-1 form");
-    const userNameInput = document.getElementById("nameUser");
-    const userNameSpan = document.getElementById("user-name");
-
-    // Obtener elementos del formulario de libros
-    const bookForm = document.querySelector("#popupForm-2 form");
+// Function to display books in the UI
+function addBookToTable(book) {
     const bookTable = document.querySelector(".book-table");
-    const bookNameInput = document.getElementById("nameBook");
-    const authorInput = document.getElementById("author");
-    const pagesInput = document.getElementById("pages");
-    const readCheckbox = document.getElementById("read");
+    const newBookEntry = document.createElement("p");
+    newBookEntry.id = book.id;
 
-    // Manage user form submit
-    userForm.addEventListener("submit", (event) => {
-        event.preventDefault(); // Prevents reloading the page
-        if (userNameInput.value.trim() !== "") {
-            userNameSpan.textContent = userNameInput.value;
-        }
-        userForm.closest(".popup").style.display = "none"; // Cerrar el popup
+    // Title (bold)
+    const titleElement = document.createElement("b");
+    titleElement.textContent = book.title;
+    newBookEntry.appendChild(titleElement);
+    // Author
+    const authorElement = document.createElement("span");
+    authorElement.textContent = `Author: ${book.author}`;
+    newBookEntry.appendChild(authorElement);
+
+    // Pages
+    const pagesElement = document.createElement("span");
+    pagesElement.textContent = `${book.pages} pages`;
+    newBookEntry.appendChild(pagesElement);
+    // Read status
+    const statusElement = document.createElement("span");
+    statusElement.classList.add("status");
+    statusElement.textContent = book.read ? "📖 Read" : "📕 Not read";
+    newBookEntry.appendChild(statusElement);
+
+    // Toggle read status on click
+    statusElement.addEventListener("click", () => {
+        book.read = !book.read; // Toggle read status
+        statusElement.textContent = book.read ? "📖 Read" : "📕 Not read";
     });
 
-    // Manage add book submit
-    bookForm.addEventListener("submit", (event) => {
-        event.preventDefault(); // Prevents reloading the page
+    // Delete button
+    const deleteElement = document.createElement("span");
+    deleteElement.classList.add("delete");
+    deleteElement.textContent = "Delete";
 
-        if (bookNameInput.value.trim() !== "" && authorInput.value.trim() !== "") {
-            // New paragraph
-            const newBookEntry = document.createElement("p");
-            newBookEntry.innerHTML = `<b>${bookNameInput.value}</b> <br> Author: ${authorInput.value}<br> ${pagesInput.value || "Unknown"} pages. <br> ${readCheckbox.checked ? "📖 Read" : "📕 Not Read"}`;
+    newBookEntry.appendChild(deleteElement);
 
-            // Appent to the table
-            bookTable.appendChild(newBookEntry);
-        }
-
-        bookForm.closest(".popup").style.display = "none"; // Close popup
-        bookForm.reset(); // Reset form
+    // Delete book entry on click
+    deleteElement.addEventListener("click", () => {
+        bookTable.removeChild(newBookEntry); // Remove from DOM
     });
+
+    // Append to book table
+    bookTable.appendChild(newBookEntry);
+}
+// User name span
+let fieldUserName = document.getElementById("user-name");
+
+// Open buttons
+const signInBtn = document.getElementById("openFormBtn");
+const addBookBtn = document.getElementById("add-book");
+
+// Popups
+const popupSignIn = document.getElementById("popupForm-1");
+const popupAddBook = document.getElementById("popupForm-2");
+
+// Close buttons
+const closeBtns = document.querySelectorAll(".close-btn");
+
+// Submit buttons
+const subUser = document.getElementById("submitUser");
+const subBook = document.getElementById("submitBook");
+
+
+
+// Open respective popups
+signInBtn.addEventListener("click", () => (popupSignIn.style.display = "flex"));
+addBookBtn.addEventListener(
+  "click",
+  () => (popupAddBook.style.display = "flex")
+);
+
+// Close respective popups when clicking the close button
+closeBtns.forEach((btn) => {
+  btn.addEventListener("click", function () {
+    this.closest(".popup").style.display = "none";
+  });
 });
 
+// Close popups if clicking outside of content
+window.addEventListener("click", function (event) {
+  if (event.target.classList.contains("popup")) {
+    event.target.style.display = "none";
+  }
+});
+
+const userForm = document.querySelector("#popupForm-1 form");
+    const userNameSpan = document.querySelector("#user-name");
+    const signInButton = document.querySelector("#openFormBtn");
+    const popupForm = document.querySelector("#popupForm-1");
+
+
+    // Updates the user name and hides the sign up button
+    userForm.addEventListener("submit", (event) => {
+        event.preventDefault(); 
+        const userNameInput = document.querySelector("#nameUser").value;
+        userNameSpan.textContent = userNameInput;
+        signInButton.style.display = "none";
+        popupForm.style.display = "none";
+    });
